@@ -1,0 +1,16 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="color-scheme" content="dark"><script src="https://telegram.org/js/telegram-web-app.js"></script><script src="common.js"></script><link rel="stylesheet" href="style.css"><title>Speech to Text</title></head><body data-title="stt_title">
+<main class="wrap card">
+<a class="back" href="/" data-i18n="menu_back"></a>
+<h1>📝 <span data-i18n="stt_title"></span></h1>
+<input type="file" id="file" accept="audio/*,video/*">
+<button id="go" data-i18n="go_stt"></button>
+<p id="st"></p>
+<textarea id="out" rows="10" readonly data-i18n-ph="stt_ph"></textarea>
+</main>
+<script>
+go.onclick = () => run(go, st, async () => {
+  if (!file.files[0]) throw new Error(t("pick_file"));
+  const fd = new FormData(); fd.append("file", file.files[0]);
+  out.value = (await (await api("/stt", {method:"POST", body: fd})).json()).text;
+});
+</script></body></html>
