@@ -1,0 +1,17 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="color-scheme" content="dark"><script src="https://telegram.org/js/telegram-web-app.js"></script><script src="common.js"></script><link rel="stylesheet" href="style.css"><title>Text to Speech</title></head><body data-title="tts_title">
+<main class="wrap card">
+<a class="back" href="/" data-i18n="menu_back"></a>
+<h1>🗣 <span data-i18n="tts_title"></span></h1>
+<select id="voice"></select>
+<textarea id="text" rows="6" data-i18n-ph="tts_ph"></textarea>
+<button id="go" data-i18n="go_tts"></button>
+<p id="st"></p><audio id="out" controls hidden></audio>
+</main>
+<script>
+loadVoices(voice);
+go.onclick = () => run(go, st, async () => {
+  const r = await api("/tts", {method:"POST", headers:{"Content-Type":"application/json"},
+    body: JSON.stringify({voice_id: voice.value, text: text.value})});
+  await showAudio(r, out);
+});
+</script></body></html>
