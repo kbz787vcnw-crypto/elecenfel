@@ -1,0 +1,60 @@
+@property --c1{syntax:"<color>";inherits:true;initial-value:#010409}
+@property --c2{syntax:"<color>";inherits:true;initial-value:#06122e}
+@property --c3{syntax:"<color>";inherits:true;initial-value:#0c2a63}
+@property --accent{syntax:"<color>";inherits:true;initial-value:#3b82f6}
+@property --ang{syntax:"<angle>";inherits:true;initial-value:150deg}
+
+:root{--on:#fff;color-scheme:dark;
+  transition:--c1 1.8s ease,--c2 1.8s ease,--c3 1.8s ease,--accent 1.2s ease;
+  animation:drift 40s ease-in-out infinite alternate}
+:root.no-t{transition:none}
+@keyframes drift{from{--ang:140deg}to{--ang:215deg}}
+@media (prefers-reduced-motion:reduce){:root{animation:none}}
+
+*{box-sizing:border-box}
+html{background:var(--c1)}
+body{margin:0;min-height:100vh;color:#eaf0ff;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
+  padding:max(14px,env(safe-area-inset-top)) 14px max(22px,env(safe-area-inset-bottom))}
+body::before{content:"";position:fixed;inset:0;z-index:-1;
+  background:linear-gradient(var(--ang),var(--c1) 0%,var(--c2) 55%,var(--c3) 100%);
+  background:linear-gradient(in oklab var(--ang),var(--c1) 0%,var(--c2) 55%,var(--c3) 100%)}
+
+.bar{display:flex;justify-content:space-between;align-items:center;max-width:520px;margin:0 auto 14px}
+.dots{display:flex;gap:8px;align-items:center}
+.dot{width:26px;height:26px;border-radius:50%;border:2px solid rgba(255,255,255,.25);padding:0;margin:0;cursor:pointer;position:relative;transition:box-shadow .3s,border-color .3s}
+.dot.sel{border-color:#fff;box-shadow:0 0 0 3px rgba(255,255,255,.18)}
+.dot.custom{background:conic-gradient(#f43f5e,#facc15,#22c55e,#06b6d4,#6366f1,#d946ef,#f43f5e);overflow:hidden}
+.dot.custom input{position:absolute;inset:-6px;width:40px;height:40px;opacity:0;cursor:pointer;padding:0;border:0}
+.lang{display:flex;border:1px solid rgba(255,255,255,.18);border-radius:999px;overflow:hidden}
+.lang button{margin:0;padding:6px 12px;font:inherit;font-size:13px;font-weight:500;color:#cfd8f5;background:transparent;border:0;cursor:pointer;transition:background .3s}
+.lang button.sel{background:rgba(255,255,255,.16);color:#fff}
+
+.wrap{max-width:520px;margin:0 auto}
+.card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:18px;
+  -webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
+h1{font-size:20px;font-weight:600;margin:6px 0 14px}
+.back{color:#9db4ff;text-decoration:none;font-size:14px}
+
+select,textarea,input[type=number],input[type=file]{width:100%;margin:8px 0;padding:12px 14px;font:inherit;font-size:16px;
+  color:#fff;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);border-radius:12px;outline:none;
+  transition:border-color .25s,box-shadow .25s}
+select:focus,textarea:focus,input:focus{border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 30%,transparent)}
+select option{background:#0b1220;color:#fff}
+textarea{resize:vertical}
+::placeholder{color:rgba(255,255,255,.4)}
+input[type=file]::file-selector-button{margin-right:10px;padding:6px 12px;border:0;border-radius:8px;background:var(--accent);color:var(--on);font:inherit;font-size:14px;cursor:pointer}
+
+main button{width:100%;margin:10px 0 4px;padding:13px;font:inherit;font-size:16px;font-weight:600;color:var(--on);
+  background:var(--accent);border:0;border-radius:12px;cursor:pointer;transition:filter .2s,transform .1s}
+main button:hover{filter:brightness(1.12)}
+main button:active{transform:scale(.98)}
+main button:disabled{opacity:.5;cursor:default}
+#st{min-height:1.2em;margin:8px 0 0;font-size:14px;color:#b9c6ee}
+audio{width:100%;margin-top:10px;color-scheme:dark}
+
+.menu a{display:flex;align-items:center;gap:12px;padding:16px;margin:10px 0;border-radius:14px;color:#fff;text-decoration:none;font-size:17px;
+  background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);transition:background .25s,transform .1s}
+.menu a:hover{background:rgba(255,255,255,.13)}
+.menu a:active{transform:scale(.98)}
+.menu a b{flex:1;font-weight:500}
+.menu a i{font-style:normal;opacity:.5;font-size:22px}
