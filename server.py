@@ -136,6 +136,19 @@ async def sfx(request):  # Sound Effects
     return await el(request, "POST", "/sound-generation", json=payload)
 
 
+# Страницы мини-аппа: работает и с папкой webapp/, и когда файлы лежат в корне репозитория.
+# Отдаём только этот список, поэтому server.py и .env снаружи недоступны.
+WEB = os.path.join(BASE, "webapp") if os.path.isdir(os.path.join(BASE, "webapp")) else BASE
+WEB_FILES = {"index.html", "tts.html", "sts.html", "stt.html", "sfx.html", "common.js", "style.css"}
+
+
+async def static_file(request):
+    name = request.match_info["name"]
+    if name not in WEB_FILES:
+        raise web.HTTPNotFound()
+    return web.FileResponse(os.path.join(WEB, name))
+
+
 def make_app():
     app = web.Application(middlewares=[auth], client_max_size=25 * 1024 * 1024)
     app.cleanup_ctx.append(session_ctx)
@@ -144,8 +157,8 @@ def make_app():
     app.router.add_post("/api/sts", sts)
     app.router.add_post("/api/stt", stt)
     app.router.add_post("/api/sfx", sfx)
-    app.router.add_get("/", lambda r: web.FileResponse(os.path.join(BASE, "webapp", "index.html")))
-    app.router.add_static("/", os.path.join(BASE, "webapp"))
+    app.router.add_get("/", lambda r: web.FileResponse(os.path.join(WEB, "index.html")))
+    app.router.add_get("/{name}", static_file)
     return app
 
 
