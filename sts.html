@@ -1,0 +1,18 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="color-scheme" content="dark"><script src="https://telegram.org/js/telegram-web-app.js"></script><script src="common.js"></script><link rel="stylesheet" href="style.css"><title>Speech to Speech</title></head><body data-title="sts_title">
+<main class="wrap card">
+<a class="back" href="/" data-i18n="menu_back"></a>
+<h1>🎙 <span data-i18n="sts_title"></span></h1>
+<select id="voice"></select>
+<input type="file" id="file" accept="audio/*">
+<button id="go" data-i18n="go_sts"></button>
+<p id="st"></p><audio id="out" controls hidden></audio>
+</main>
+<script>
+loadVoices(voice);
+go.onclick = () => run(go, st, async () => {
+  if (!file.files[0]) throw new Error(t("pick_audio"));
+  const fd = new FormData();
+  fd.append("audio", file.files[0]); fd.append("voice_id", voice.value);
+  await showAudio(await api("/sts", {method:"POST", body: fd}), out);
+});
+</script></body></html>
